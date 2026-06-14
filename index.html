@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>US Open 2026 Golf Pool</title><!-- v1.0 -->
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f0ece6;color:#1a1a1a;font-size:14px;min-height:100vh;padding:1rem;}
+.app{max-width:980px;margin:0 auto;}
+/* USGA stripe: navy + red diagonal */
+.usga-stripe{background-color:#002868;background-image:repeating-linear-gradient(
+  -45deg,
+  transparent,transparent 8px,
+  rgba(191,13,62,0.85) 8px,rgba(191,13,62,0.85) 12px,
+  transparent 12px,transparent 20px,
+  rgba(255,255,255,0.12) 20px,rgba(255,255,255,0.12) 21px
+);}
+.header{border-radius:12px 12px 0 0;overflow:hidden;}
+.header-top{height:16px;}
+.header-main{background:#002868;padding:18px 24px 16px;}
+.header-title{font-size:24px;font-weight:700;color:#fff;font-family:Georgia,serif;letter-spacing:0.01em;}
+.header-sub{font-size:13px;color:rgba(255,255,255,0.72);margin-top:4px;}
+.header-pills{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.pill{display:inline-block;background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.28);border-radius:99px;padding:3px 12px;font-size:11px;color:rgba(255,255,255,0.9);}
+.header-bottom{height:12px;}
+.tabs{display:flex;background:#002868;border-bottom:3px solid #BF0D3E;}
+.tab{padding:10px 22px;font-size:13px;cursor:pointer;border:none;background:none;color:rgba(255,255,255,0.6);font-weight:500;}
+.tab:hover{color:#fff;}
+.tab.active{color:#fff;border-bottom:3px solid #fff;margin-bottom:-3px;font-weight:700;}
+.body{background:#fdf8f5;border:1px solid #ddd0c8;border-top:none;border-radius:0 0 12px 12px;padding:1rem;}
+.join-banner{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-radius:10px;margin-bottom:16px;border:2px solid #002868;background:#fff;gap:12px;flex-wrap:wrap;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{text-align:left;padding:7px 10px;color:#002868;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;border-bottom:2px solid #BF0D3E;background:#f0f3ff;}
+td{padding:7px 10px;border-bottom:0.5px solid #ede6de;vertical-align:middle;}
+@media(max-width:480px){th{padding:6px 5px;font-size:10px;}td{padding:6px 5px;font-size:12px;}.rk{width:22px;height:22px;font-size:11px;}}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:rgba(0,40,104,0.025);}
+tr:hover td{background:rgba(0,40,104,0.06);}
+.su{color:#1a6b2e;font-weight:700;}
+.so{color:#BF0D3E;font-weight:700;}
+.rk{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:#002868;color:#fff;border-radius:50%;font-size:12px;font-weight:700;}
+.rk.me{background:#1a6b2e;}
+.flabel{font-size:11px;font-weight:700;color:#002868;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:5px;display:block;}
+input[type=text],input[type=number]{width:100%;padding:9px 12px;border:1px solid #ddd0c8;border-radius:8px;background:#fff;color:#1a1a1a;font-size:14px;font-family:system-ui,sans-serif;outline:none;}
+input:focus{border-color:#002868;box-shadow:0 0 0 2px rgba(0,40,104,0.12);}
+input[type=checkbox]{width:17px;height:17px;cursor:pointer;accent-color:#002868;}
+.budget{background:#f0f3ff;border:1px solid #c0caee;border-radius:8px;padding:10px 14px;margin-bottom:10px;}
+.bbar{height:8px;background:#e0c8c8;border-radius:99px;overflow:hidden;margin:5px 0;}
+.bfill{height:100%;background:#002868;border-radius:99px;transition:width 0.2s;}
+.bfill.over{background:#BF0D3E;}
+.tier-block{border:1px solid #ddd0c8;border-radius:10px;overflow:hidden;margin-bottom:10px;}
+.tier-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;}
+.tier-title{font-weight:700;font-size:14px;font-family:Georgia,serif;color:#fff;}
+.tier-sub{font-size:11px;color:rgba(255,255,255,0.7);margin-top:1px;}
+.tier-badge{font-size:12px;font-weight:700;background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 12px;color:#fff;white-space:nowrap;}
+.tier-badge.done{background:#1a6b2e;}
+.tier-body{background:#fff;}
+.pr{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:0.5px solid #ede6de;}
+.pr:last-child{border-bottom:none;}
+.pr.dim{opacity:0.32;}
+.pn{flex:1;font-size:13px;font-weight:500;}
+.pc{font-size:13px;font-weight:700;min-width:74px;text-align:right;}
+.chip{display:inline-flex;align-items:center;gap:5px;border-radius:99px;padding:3px 10px;font-size:12px;margin:2px;font-weight:600;color:#fff;}
+.cx{cursor:pointer;font-size:14px;opacity:0.8;}
+.cx:hover{opacity:1;}
+.info{background:#f0f3ff;border:1px solid #c0caee;border-radius:8px;padding:8px 14px;font-size:12px;color:#888;margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+.loading{text-align:center;padding:2.5rem;color:#888;}
+a.namelink{color:#1a1a1a;text-decoration:underline;cursor:pointer;font-weight:500;}
+a.namelink:hover{color:#002868;}
+a.namelink.isme{color:#1a6b2e;font-weight:700;}
+.rc-up{color:#1a6b2e;font-weight:700;font-size:12px;}
+.rc-dn{color:#BF0D3E;font-weight:700;font-size:12px;}
+.rc-eq{color:#aaa;font-size:12px;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:500;z-index:999;opacity:0;transition:opacity 0.3s;pointer-events:none;}
+.toast.show{opacity:1;}
+.best5-note{font-size:10px;color:#1a6b2e;font-weight:700;margin-left:4px;}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init('WOQ7Zb1ggBzssBLWU');</script>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="usga-stripe header-top"></div>
+    <div class="header-main">
+      <div class="header-title">US Open Championship — 2026</div>
+      <div class="header-sub">Shinnecock Hills Golf Club &nbsp;·&nbsp; Southampton, NY</div>
+      <div class="header-pills">
+        <span class="pill">June 18–21, 2026</span>
+        <span class="pill">Major Championship</span>
+        <span class="pill">126th US Open</span>
+      </div>
+    </div>
+    <div class="usga-stripe header-bottom"></div>
+  </div>
+  <div class="tabs" id="tabs">
+    <button class="tab active" onclick="setView('pool')">Pool Standings</button>
+    <button class="tab" onclick="setView('tourney')">Tournament Leaderboard</button>
+  </div>
+  <div class="body" id="root"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ── SUPABASE CONFIG ──────────────────────────────────────────────
+// TODO: Replace with your US Open Supabase project credentials
+const SB_URL='https://dibnzwffybjimquwxugo.supabase.co';
+const SB_KEY='sb_publishable_j4PDj29O1WSC7NxXQmYtPg_VGiLFztA';
+async function sbFetch(path,opts={}){
+  const res=await fetch(SB_URL+path,{...opts,headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':opts.prefer||'',...(opts.headers||{})}});
+  if(!res.ok){const t=await res.text();throw new Error(t);}
+  const txt=await res.text();return txt?JSON.parse(txt):null;
+}
+async function loadEntries(){return await sbFetch('/rest/v1/entries?select=*&order=joined_at.asc')||[];}
+async function updatePaid(id,paid){return await sbFetch('/rest/v1/entries?id=eq.'+id,{method:'PATCH',prefer:'return=representation',body:JSON.stringify({paid})});}
+async function insertEntry(name,picks,tiebreaker,pin,email){
+  return await sbFetch('/rest/v1/entries',{method:'POST',prefer:'return=representation',body:JSON.stringify({name,picks,tiebreaker,pin,email})});
+}
+async function deleteEntryById(id){
+  return await sbFetch('/rest/v1/entries?id=eq.'+id,{method:'DELETE'});
+}
+const MY_KEY='usopen2026_myId',PR_KEY='usopen2026_prevRanks';
+function getMyId(){try{const v=localStorage.getItem(MY_KEY);return v?parseInt(v):null;}catch(e){return null;}}
+function setMyId(id){try{localStorage.setItem(MY_KEY,String(id));}catch(e){}}
+function getPrevRanks(){try{const v=localStorage.getItem(PR_KEY);return v?JSON.parse(v):{};}catch(e){return{};}}
+function savePrevRanks(o){try{localStorage.setItem(PR_KEY,JSON.stringify(o));}catch(e){}}
+
+// ── LOCK TIME ────────────────────────────────────────────────────
+// US Open 2026 — first tee time Thursday June 18, 7:00am EDT (11:00 UTC)
+const LOCK_TIME=new Date('2026-06-18T11:00:00Z');
+function isLocked(){return Date.now()>=LOCK_TIME.getTime();}
+
+// ── RULES ────────────────────────────────────────────────────────
+const BUDGET=210000;
+const MIN_PICKS=5, MAX_PICKS=8, MIN_PER_TIER=1, SCORING_PICKS=5;
+
+// ── 4 TIERS ─────────────────────────────────────────────────────
+const TIERS=[
+  {id:1,name:"Tier 1 — Elite",     color:"#002868",range:""},
+  {id:2,name:"Tier 2 — Mid",       color:"#1a4a8a",range:""},
+  {id:3,name:"Tier 3 — Value",     color:"#1a6b2e",range:""},
+  {id:4,name:"Tier 4 — Longshot",  color:"#7a5a00",range:""},
+];
+const TC={1:"#002868",2:"#1a4a8a",3:"#1a6b2e",4:"#7a5a00"};
+
+// ── PRICING FORMULA ──────────────────────────────────────────────
+const SAL_MIN=3000,SAL_MAX=85000,CURVE=0.38,T1M=1.85,T2M=1.15;
+function oddsToTier(o){return o<=2500?1:o<=5500?2:o<=15000?3:4;}
+function oddsToSalary(o){
+  const p=100/(o+100);
+  const t=oddsToTier(o);
+  const m=t===1?T1M:t===2?T2M:1.0;
+  return Math.round((SAL_MIN+(SAL_MAX-SAL_MIN)*Math.pow(p,CURVE))*m/500)*500;
+}
+function updateTierRanges(){
+  [1,2,3,4].forEach(tid=>{
+    const ps=PLAYERS.filter(p=>p.tier===tid);if(!ps.length)return;
+    const costs=ps.map(p=>p.cost);
+    TIERS[tid-1].range='$'+Math.min(...costs).toLocaleString()+' – $'+Math.max(...costs).toLocaleString();
+  });
+}
+
+// ── 2026 US Open Field — Consensus odds (CBS/FanDuel, June 13 2026) ──
+const BASE_ODDS=[
+  // T1 Elite (<=+2500)
+  ["Scottie Scheffler",550],["Rory McIlroy",1000],["Jon Rahm",1400],
+  ["Xander Schauffele",1600],["Tommy Fleetwood",1800],
+  ["Cameron Young",2000],["Ludvig Aberg",2000],["Bryson DeChambeau",2000],
+  // T2 Mid (+2501-+5500)
+  ["Matt Fitzpatrick",2200],["Brooks Koepka",2500],
+  ["Sam Burns",3000],["Tyrrell Hatton",3300],
+  ["Justin Thomas",3500],["Wyndham Clark",3500],["Justin Rose",3500],
+  ["Collin Morikawa",4000],["Patrick Reed",4000],["Russell Henley",4000],
+  ["Si Woo Kim",4000],["J.J. Spaun",4000],
+  ["Shane Lowry",4500],["Chris Gotterup",4500],
+  ["Viktor Hovland",5000],["Patrick Cantlay",5000],
+  ["Hideki Matsuyama",5500],["Joaquin Niemann",5500],
+  // T3 Value (+5501-+15000)
+  ["Jordan Spieth",6000],["Aaron Rai",6000],
+  ["Min Woo Lee",6000],["Robert MacIntyre",6000],
+  ["Cameron Smith",6500],["Ben Griffin",6500],["Kristoffer Reitan",6500],
+  ["Rasmus Hojgaard",7000],["Tony Finau",7000],["Jason Day",7000],
+  ["Akshay Bhatia",7500],
+  ["Keegan Bradley",8000],["Corey Conners",8000],["Sepp Straka",8000],
+  ["Adam Scott",9000],["Maverick McNealy",9000],["Jake Knapp",9500],
+  ["Harris English",10000],["Nick Taylor",10000],["Harry Hall",10000],
+  ["Sungjae Im",10000],["Rickie Fowler",10000],["Jacob Bridgeman",10000],
+  ["Sahith Theegala",10000],["Alex Noren",10000],
+  ["Ryan Fox",11000],["Sam Stevens",11000],["Marco Penge",11000],
+  ["Kurt Kitayama",12000],["Ryan Gerard",12000],
+  ["Nicolai Hojgaard",12000],["Alex Fitzpatrick",12000],["Alex Smalley",12000],
+  ["Daniel Berger",13000],["Nico Echavarria",13000],
+  ["Matt McCarty",14000],["Michael Kim",14000],["Pierceson Coody",14000],
+  ["Gary Woodland",14000],["Dustin Johnson",15000],["Carlos Ortiz",15000],
+  // T4 Longshot (>+15000)
+  ["Lucas Herbert",18000],["Brian Harman",18000],
+  ["Ryo Hisatsune",20000],["Andrew Novak",20000],["Tom Kim",22000],
+  ["Max Greyserman",25000],["Patrick Rodgers",25000],
+  ["Billy Horschel",25000],["Chris Kirk",25000],
+  ["Taylor Montgomery",28000],["Peter Uihlein",30000],["Nick Hardy",30000],
+  ["Davis Thompson",35000],["Emiliano Grillo",35000],
+  ["Keith Mitchell",40000],["Cole Hammer",40000],
+  ["Graeme McDowell",50000],["Dylan Wu",50000],["Zac Blair",50000],
+  ["J.B. Holmes",60000],["Neal Shipley",60000],["Alejandro Tosti",60000],
+  ["Brandon Wu",75000],["Adrien Dumont de Chassart",75000],
+  ["Carl Yuan",80000],["Cooper Dossey",100000],["Ben Silverman",100000],
+  ["Jimmy Stanger",100000],["Padraig Harrington",150000],
+  ["Andrew Putnam",150000],["Laurie Canter",250000],
+  ["Adrien Saddier",250000],["Jayden Schaper",300000],
+  ["Matti Schmid",300000],["Sudarshan Yellamaraju",300000],
+  ["Johnny Keefer",350000],["Nathan Kimsey",350000],["Ryuichi Oiwa",400000],
+];
+
+let PLAYERS=BASE_ODDS.map(([name,odds],i)=>({id:i+1,name,odds,tier:oddsToTier(odds),cost:oddsToSalary(odds)}));
+updateTierRanges();
+let oddsLastUpdated="Consensus (CBS/FanDuel — June 13, 2026)";
+
+// ── LIVE ODDS from Action Network ────────────────────────────────
+async function refreshOdds(){
+  try{
+    const r=await fetch('https://api.actionnetwork.com/web/v2/scoreboard/golf?bookIds=15,30,76,75,123&periods=full');
+    if(!r.ok)return;
+    const d=await r.json();
+    const markets=d?.markets||d?.event?.markets||[];
+    const outright=markets.find(m=>(m.type||'').toLowerCase().includes('winner')||(m.type||'').toLowerCase().includes('outright'));
+    if(!outright?.outcomes)return;
+    const updated=[];
+    outright.outcomes.forEach((oc,i)=>{
+      const name=(oc.participant||oc.name||'').trim();
+      const consensus=oc.books?.find(b=>b.book_id===15)||oc.books?.[0];
+      const odds=consensus?.odds?.num;
+      if(!name||!odds)return;
+      const o=Math.abs(odds);
+      updated.push({id:i+1,name,odds:o,tier:oddsToTier(o),cost:oddsToSalary(o)});
+    });
+    if(updated.length>=10){
+      PLAYERS=updated.sort((a,b)=>a.odds-b.odds);
+      updateTierRanges();
+      oddsLastUpdated='Live (Action Network — '+new Date().toLocaleTimeString()+')';
+      render();
+    }
+  }catch(e){}
+}
+
+// ── NAME MATCHING ────────────────────────────────────────────────
+function normName(s){return(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\u00f8/gi,'o').replace(/\u00e6/gi,'ae').replace(/\u00e5/gi,'a').replace(/\u00fe/gi,'th').toLowerCase().trim();}
+
+// ── SCORE HELPERS ────────────────────────────────────────────────
+function fmt(n){return'$'+n.toLocaleString();}
+function fmtS(s){if(s===null||s===undefined)return'--';if(typeof s==='number'){if(s===0)return'E';return s>0?'+'+s:''+s;}return s;}
+function sc(s){const n=typeof s==='number'?s:parseFloat(s);if(isNaN(n))return'';return n<0?'su':n>0?'so':'';}
+function RB(label,fn,small){const p=small?'7px 16px':'10px 22px';const fs=small?'13px':'14px';return`<button onclick="${fn}" style="background-color:#002868;color:#fff;border:none;border-radius:8px;padding:${p};font-size:${fs};font-weight:700;cursor:pointer;white-space:nowrap;">${label}</button>`;}
+function RBalt(label,fn,small){const p=small?'7px 16px':'10px 22px';const fs=small?'13px':'14px';return`<button onclick="${fn}" style="background-color:#BF0D3E;color:#fff;border:none;border-radius:8px;padding:${p};font-size:${fs};font-weight:700;cursor:pointer;white-space:nowrap;">${label}</button>`;}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+
+function getPS(name){
+  if(!tData)return{total:null,today:null,thru:null,r1:null,r2:null,r3:null,r4:null};
+  try{
+    const comps=tData.competitions[0].competitors;
+    const parts=normName(name).split(' ').filter(Boolean);
+    const m=comps.find(c=>{
+      const n=normName((c.athlete&&c.athlete.displayName)||(c.athlete&&c.athlete.fullName)||'');
+      return parts.every(p=>n.includes(p));
+    });
+    if(!m)return{total:null,today:null,thru:null,r1:null,r2:null,r3:null,r4:null};
+    let tv=null;
+    if(typeof m.score==='string'){tv=m.score==='E'?0:parseFloat(m.score);}
+    else if(m.score&&m.score.value!==undefined){tv=parseFloat(m.score.value);}
+    else if(m.score&&m.score.displayValue){const s=m.score.displayValue;tv=s==='E'?0:parseFloat(s);}
+    const ls=m.linescores||[];
+    const roundScore=(i)=>{if(!ls[i])return null;const dv=ls[i].displayValue;if(dv===undefined||dv===null)return null;return dv;};
+    const r1=roundScore(0),r2=roundScore(1),r3=roundScore(2),r4=roundScore(3);
+    const curRoundIdx=Math.max(0,(m.status&&m.status.period?m.status.period:ls.length)-1);
+    let today=null;
+    const curRoundLS=ls[curRoundIdx];
+    if(curRoundLS&&curRoundLS.displayValue){
+      const dv=curRoundLS.displayValue;
+      today=dv==='E'?0:parseFloat(dv);
+      if(isNaN(today))today=null;
+    }
+    if(today===null){
+      for(let i=ls.length-1;i>=0;i--){
+        if(ls[i]&&ls[i].displayValue){
+          const dv=ls[i].displayValue;
+          today=dv==='E'?0:parseFloat(dv);
+          if(isNaN(today))today=null;
+          else break;
+        }
+      }
+    }
+    let thru=null;
+    if(m.status){if(m.status.thru!==undefined&&m.status.thru!==null)thru=m.status.thru;else if(m.status.type&&m.status.type.shortDetail)thru=m.status.type.shortDetail;else if(m.status.displayValue)thru=m.status.displayValue;}
+    if(thru===null&&ls.length>0){
+      for(let i=ls.length-1;i>=0;i--){
+        if(ls[i]&&ls[i].linescores&&ls[i].linescores.length){thru=ls[i].linescores.length;break;}
+      }
+    }
+    const statusStr=JSON.stringify(m.status||'').toUpperCase();
+    const explicitMC=statusStr.includes('CUT')||statusStr.includes('"MC"')||statusStr.includes('MISSED');
+    const hasR1=ls[0]&&ls[0].displayValue&&ls[0].displayValue!=='';
+    const hasR2=ls[1]&&ls[1].displayValue&&ls[1].displayValue!=='';
+    const hasR3=ls[2]&&ls[2].displayValue&&ls[2].displayValue!=='';
+    const hasR4=ls[3]&&ls[3].displayValue&&ls[3].displayValue!=='';
+    const tournRound=(tData&&tData.competitions&&tData.competitions[0]&&tData.competitions[0].status&&tData.competitions[0].status.period)||0;
+    const inferredMC=tournRound>=3&&hasR1&&hasR2&&!hasR3&&!hasR4&&(!isNaN(tv)&&tv!==null);
+    const isMC=explicitMC||inferredMC;
+    if((isNaN(tv)||tv===null)&&isMC){
+      const parseRound=(i)=>{if(!ls[i])return null;const dv=ls[i].displayValue;if(!dv)return null;const v=dv==='E'?0:parseFloat(dv);return isNaN(v)?null:v;};
+      const rv1=parseRound(0),rv2=parseRound(1);
+      if(rv1!==null&&rv2!==null)tv=rv1+rv2;
+    }
+    const todayFinal=isMC?null:today;
+    return{total:(!isNaN(tv)&&tv!==null)?tv:null,today:todayFinal,thru,r1,r2,r3,r4,isMC:!!isMC};
+  }catch(e){return{total:null,today:null,thru:null,r1:null,r2:null,r3:null,r4:null,isMC:false};}
+}
+
+window.debugPlayer=function(name){
+  if(!tData)return console.log('No tData yet');
+  const comps=tData.competitions[0].competitors;
+  const parts=normName(name).split(' ').filter(Boolean);
+  const m=comps.find(c=>{const n=normName((c.athlete&&c.athlete.displayName)||'');return parts.every(p=>n.includes(p));});
+  if(!m)return console.log('Player not found:',name);
+  console.log('=== ESPN raw for',name,'===');
+  console.log('status:',JSON.stringify(m.status,null,2));
+  console.log('score:',JSON.stringify(m.score,null,2));
+  console.log('linescores:',JSON.stringify(m.linescores,null,2));
+  console.log('parsed:',getPS(name));
+};
+
+function poolScore(entry){
+  if(!tData)return null;
+  const picks=Array.isArray(entry.picks)?entry.picks:[];
+  const psData=picks.map(pid=>{const p=PLAYERS.find(x=>x.id===pid);return p?getPS(p.name):null;}).filter(Boolean);
+  if(!psData.length)return null;
+  const active=psData.filter(ps=>!ps.isMC&&ps.total!==null).map(ps=>ps.total);
+  const mc=psData.filter(ps=>ps.isMC&&ps.total!==null).map(ps=>ps.total).sort((a,b)=>a-b);
+  const activeSorted=active.slice().sort((a,b)=>a-b);
+  const slots=activeSorted.slice(0,SCORING_PICKS);
+  let mcIdx=0;
+  while(slots.length<SCORING_PICKS&&mcIdx<mc.length){slots.push(mc[mcIdx++]);}
+  if(!slots.length)return null;
+  return slots.reduce((a,b)=>a+b,0);
+}
+function todayScore(entry){
+  if(!tData)return null;
+  const picks=Array.isArray(entry.picks)?entry.picks:[];
+  const scores=picks.map(pid=>{
+    const p=PLAYERS.find(x=>x.id===pid);if(!p)return null;
+    const ps=getPS(p.name);if(ps.isMC)return null;
+    const t=ps.today;if(t===null||t===undefined)return null;
+    const v=t==='E'?0:parseFloat(t);return isNaN(v)?null:v;
+  }).filter(s=>s!==null);
+  if(!scores.length)return null;
+  const sorted=scores.slice().sort((a,b)=>a-b);
+  return sorted.slice(0,SCORING_PICKS).reduce((a,b)=>a+b,0);
+}
+
+function rcHtml(uid,cur){
+  const prev=prevRanks[uid];
+  if(prev===undefined||prev===null)return'<span class="rc-eq">—</span>';
+  const d=prev-cur;if(d===0)return'<span class="rc-eq">—</span>';
+  return d>0?`<span class="rc-up">▲${d}</span>`:`<span class="rc-dn">▼${Math.abs(d)}</span>`;
+}
+
+// ── STATE ────────────────────────────────────────────────────────
+let view='pool',registering=false,viewingUser=null,viewingRules=false,adminUnlocked=false,viewingAdmin=false;
+let entries=[],tData=null,tLoading=false,appLoading=true;
+let myId=getMyId(),prevRanks=getPrevRanks();
+let rN='',rP=[],rTB='',rEmail='',rPin='',rErr='',rS='';
+let editingEntry=null;
+
+async function refreshEntries(){try{entries=await loadEntries();}catch(e){console.error(e);}}
+async function fetchScores(){
+  tLoading=true;render();
+  const USO_KEYWORDS=['u.s. open','us open','usga','shinnecock'];
+  function isUSO(ev){if(!ev||!ev.name)return false;const n=ev.name.toLowerCase();return USO_KEYWORDS.some(k=>n.includes(k));}
+  function pickBestEvent(events){return events.find(isUSO)||null;}
+  try{
+    const r=await fetch('https://site.api.espn.com/apis/site/v2/sports/golf/pga/scoreboard');
+    const d=await r.json();
+    if(d&&d.events&&d.events.length>0){tData=pickBestEvent(d.events);tLoading=false;render();return;}
+  }catch(e){}
+  try{
+    const r2=await fetch('https://site.api.espn.com/apis/site/v2/sports/golf/pga/leaderboard?league=pga');
+    const d2=await r2.json();
+    if(d2&&d2.events&&d2.events.length>0){tData=pickBestEvent(d2.events);tLoading=false;render();return;}
+  }catch(e){}
+  tData=null;tLoading=false;render();
+}
+
+// ── RENDER ───────────────────────────────────────────────────────
+function render(){
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',(i===0&&view==='pool')||(i===1&&view==='tourney')));
+  const root=document.getElementById('root');
+  if(appLoading){root.innerHTML=`<div class="loading">Loading pool data…</div>`;return;}
+  if(viewingRules){root.innerHTML=renderRules();return;}
+  if(viewingAdmin){root.innerHTML=renderAdmin();return;}
+  if(registering){root.innerHTML=renderReg();return;}
+  if(viewingUser!==null){root.innerHTML=renderDetail();return;}
+  root.innerHTML=view==='pool'?renderPool():renderTourney();
+}
+function setView(v){view=v;if(v==='tourney'&&!tData&&!tLoading)fetchScores();render();}
+window.setView=setView;
+
+function renderPool(){
+  const scored=entries.map(e=>({...e,score:poolScore(e),today:todayScore(e)}));
+  scored.sort((a,b)=>{if(a.score===null&&b.score===null)return 0;if(a.score===null)return 1;if(b.score===null)return -1;return a.score-b.score;});
+  const joined=myId&&entries.find(e=>e.id===myId);
+  let h='';
+  if(!joined){
+    if(isLocked()){
+      h+=`<div class="join-banner" style="background:#f0f3ff;border-color:#c0caee;">
+        <span style="font-size:13px;color:#002868;font-weight:700;">🔒 Picks are locked — the tournament has started.</span>
+      </div>`;
+    } else {
+      h+=`<div class="join-banner">
+        <div>
+          <strong style="font-size:16px;color:#002868;">Join the Pool</strong><br>
+          <span style="font-size:12px;color:#666;">Pick 5–8 golfers (min 1 per tier) &nbsp;·&nbsp; Best 5 scores count &nbsp;·&nbsp; $210,000 budget &nbsp;·&nbsp; ${entries.length} participant${entries.length!==1?'s':''} so far &nbsp;·&nbsp; Picks hidden until June 18</span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        ${RBalt('📋 Rules','showRules()')}
+        ${RB('+ Join the Pool','startReg()')}
+      </div>
+      </div>`;
+    }
+  }
+  if(!entries.length){
+    h+=`<div style="text-align:center;padding:2.5rem;background:#fff;border:1px solid #ddd0c8;border-radius:10px;color:#888;">No entries yet — be the first to join</div>`;
+    return h;
+  }
+  h+=`<div style="background:#fff;border:1px solid #ddd0c8;border-radius:10px;overflow:hidden;margin-bottom:14px;">
+  <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;"><table style="min-width:420px;table-layout:fixed;width:100%;"><thead><tr>
+    <th style="width:42px;">Pos</th><th style="width:auto;">Name</th>
+    <th style="width:58px;text-align:right;">Total</th>
+    <th style="width:58px;text-align:right;">Today</th>
+    <th style="width:58px;text-align:center;">Chg</th>
+    ${isLocked()?'<th style="width:72px;text-align:right;">T-Break</th>':''}
+  </tr></thead><tbody>`;
+  scored.forEach((e,i)=>{
+    const rank=i+1,isme=e.id===myId;
+    h+=`<tr style="${isme?'background:rgba(26,107,46,0.06);':''}">
+      <td><span class="rk${isme?' me':''}">${rank}</span></td>
+      <td><a class="namelink${isme?' isme':''}" onclick="viewUser(${e.id})">${e.name}${isme?' (you)':''}${e.paid==true||e.paid=='true'?' 💰':''}</a></td>
+      <td style="text-align:right;" class="${e.score!==null?sc(e.score):''}">${e.score!==null?fmtS(e.score):'--'}</td>
+      <td style="text-align:right;" class="${e.today!==null?sc(e.today):''}">${e.today!==null?fmtS(e.today):'--'}</td>
+      <td style="text-align:center;">${rcHtml(e.id,rank)}</td>
+      ${isLocked()?`<td style="text-align:right;color:#999;">${e.tiebreaker}</td>`:''}
+    </tr>`;
+  });
+  const nr={};scored.forEach((e,i)=>{nr[e.id]=i+1;});prevRanks=nr;savePrevRanks(nr);
+  h+=`</tbody></table></div></div>`;
+  if(joined){
+    h+=`<div class="info"><span>📡 Live via ESPN${!tData?' &nbsp;·&nbsp; Tournament begins June 18':''} &nbsp;·&nbsp; 💰 Odds: ${oddsLastUpdated} &nbsp;·&nbsp; ${entries.length} participant${entries.length!==1?'s':''}</span><div style="display:flex;gap:8px;">${RBalt('📋 Rules','showRules()',true)}${RBalt('💰 Admin','showAdmin()',true)}${RB('Refresh Scores','go()',true)}</div></div>`;
+  }
+  return h;
+}
+
+function renderDetail(){
+  const e=entries.find(x=>x.id===viewingUser);if(!e)return'';
+  const canSeePicks=e.id===myId||isLocked();
+  if(!canSeePicks){
+    let h=`<div style="margin-bottom:12px;">${RB('← Back','back()',true)}</div>
+    <div style="background:#fff;border:1px solid #ddd0c8;border-radius:10px;overflow:hidden;margin-bottom:14px;">
+      <div style="background:#002868;color:#fff;font-size:15px;font-weight:700;font-family:Georgia,serif;padding:10px 16px;">${e.name}</div>
+      <div style="padding:1.25rem;text-align:center;">
+        <div style="font-size:56px;margin-bottom:12px;">✅</div>
+        <div style="font-size:17px;font-weight:700;color:#1a6b2e;margin-bottom:6px;">Picks Approved</div>
+        <div style="font-size:14px;color:#555;margin-bottom:20px;">Tiebreaker Submitted</div>
+        <div style="font-size:12px;color:#aaa;">🔒 Full picks revealed June 18 at 7:00am EDT</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;">
+      ${!isLocked()?'<button onclick="selfReset('+e.id+')" style="background:none;border:1px solid #002868;color:#002868;border-radius:8px;padding:6px 14px;font-size:12px;cursor:pointer;font-weight:600;">⟳ Change My Picks</button>':'<span></span>'}
+      ${adminUnlocked
+        ? '<button onclick="deleteEntry('+e.id+')" style="background:none;border:1px solid #c00;color:#c00;border-radius:8px;padding:6px 14px;font-size:12px;cursor:pointer;font-weight:600;">⟳ Reset This Entry</button>'
+        : '<button onclick="promptAdmin()" style="background:none;border:1px solid #aaa;color:#aaa;border-radius:8px;padding:6px 14px;font-size:12px;cursor:pointer;font-weight:600;">🔐 Admin</button>'
+      }
+    </div>`;
+    return h;
+  }
+  const picks=Array.isArray(e.picks)?e.picks:[];
+  const spent=picks.reduce((s,pid)=>{const p=PLAYERS.find(x=>x.id===pid);return s+(p?p.cost:0);},0);
+  const totalScore=poolScore(e);
+  const pp=picks.map(pid=>{
+    const p=PLAYERS.find(x=>x.id===pid);
+    const ps=getPS(p?p.name:'');
+    return{p,ps};
+  }).sort((a,b)=>{
+    if(a.p&&b.p&&a.p.tier!==b.p.tier)return a.p.tier-b.p.tier;
+    if(a.ps.total===null)return 1;if(b.ps.total===null)return -1;
+    return a.ps.total-b.ps.total;
+  });
+  const activeScored=pp.filter(x=>!x.ps.isMC&&x.ps.total!==null).sort((a,b)=>a.ps.total-b.ps.total);
+  const mcScored=pp.filter(x=>x.ps.isMC&&x.ps.total!==null).sort((a,b)=>a.ps.total-b.ps.total);
+  const countingSlots=activeScored.slice(0,SCORING_PICKS);
+  let mcPadIdx=0;
+  while(countingSlots.length<SCORING_PICKS&&mcPadIdx<mcScored.length){countingSlots.push(mcScored[mcPadIdx++]);}
+  const countingIds=new Set(countingSlots.map(x=>x.p&&x.p.id));
+
+  let h=`<div style="margin-bottom:12px;">${RB('← Back','back()',true)}</div>
+  <div style="background:#fff;border:1px solid #ddd0c8;border-radius:10px;overflow:hidden;margin-bottom:14px;">
+  <div style="background:#002868;color:#fff;font-size:15px;font-weight:700;font-family:Georgia,serif;padding:10px 16px;">${e.name}${e.id===myId?' (you)':''}</div>
+  <div style="padding:1rem 1.25rem;">
+    <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:14px;">
+      <div><div style="font-size:11px;color:#999;text-transform:uppercase;font-weight:700;">Salary</div><div style="font-size:20px;font-weight:700;color:#002868;">${fmt(spent)}</div></div>
+      <div><div style="font-size:11px;color:#999;text-transform:uppercase;font-weight:700;">Remaining</div><div style="font-size:20px;font-weight:700;">${fmt(BUDGET-spent)}</div></div>
+      <div><div style="font-size:11px;color:#999;text-transform:uppercase;font-weight:700;">Pool Score <span style="font-weight:400;font-size:10px;">(best ${SCORING_PICKS})</span></div><div style="font-size:20px;font-weight:700;" class="${totalScore!==null?sc(totalScore):''}">${totalScore!==null?fmtS(totalScore):'--'}</div></div>
+      <div style="margin-left:auto;text-align:right;"><div style="font-size:11px;color:#999;text-transform:uppercase;font-weight:700;">Tiebreaker</div><div style="font-size:20px;font-weight:700;color:#002868;">${e.tiebreaker}</div></div>
+    </div>
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;"><table style="min-width:420px;">
+      <thead><tr>
+        <th style="width:8px;padding:7px 0;"></th>
+        <th>Player</th><th style="text-align:right;">Salary</th>
+        <th style="text-align:right;">Total</th><th style="text-align:right;">Today</th>
+        <th style="text-align:right;">Thru</th>
+        <th style="text-align:right;">R1</th><th style="text-align:right;">R2</th>
+        <th style="text-align:right;">R3</th><th style="text-align:right;">R4</th>
+      </tr></thead><tbody>`;
+  pp.forEach(({p,ps})=>{
+    if(!p)return;
+    const tier=TIERS[p.tier-1];
+    const isCounting=countingIds.has(p.id);
+    const notCounting=ps.total!==null&&!isCounting;
+    h+=`<tr style="${notCounting?'opacity:0.45;':''}">
+      <td style="padding:7px 4px;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${tier.color};"></span></td>
+      <td>${p.name}${isCounting?'<span class="best5-note">★</span>':''}<br><span style="font-size:10px;color:#999;">${tier.name.split('—')[1].trim()}</span></td>
+      <td style="text-align:right;font-weight:700;">${fmt(p.cost)}</td>
+      <td style="text-align:right;" class="${ps.total!==null?sc(ps.total):''}">${fmtS(ps.total)}</td>
+      <td style="text-align:right;" class="${(!ps.isMC&&ps.today!==null)?sc(parseFloat(ps.today)):''}">${ps.isMC?'--':(ps.today!==null?fmtS(ps.today):'--')}</td>
+      <td style="text-align:right;color:#999;">${ps.isMC?'MC':(ps.thru!==null?ps.thru:'--')}</td>
+      <td style="text-align:right;">${ps.r1||'--'}</td><td style="text-align:right;">${ps.r2||'--'}</td>
+      <td style="text-align:right;">${ps.r3||'--'}</td><td style="text-align:right;">${ps.r4||'--'}</td>
+    </tr>`;
+  });
+  h+=`</tbody></table></div>
+  <div style="font-size:11px;color:#666;margin-top:8px;">★ = counting toward pool score (best ${SCORING_PICKS} of ${picks.length})</div>
+  </div></div>
+  <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;">
+    ${(!isLocked())?'<button onclick="selfReset('+e.id+')" style="background:none;border:1px solid #002868;color:#002868;border-radius:8px;padding:6px 14px;font-size:12px;cursor:pointer;font-weight:600;">⟳ Change My Picks</button>':`<span></span>`}
+    ${adminUnlocked
+      ? '<button onclick="deleteEntry('+e.id+')" style="background:none;border:1px solid #c00;color:#c00;border-radius:8px;padding:6px 14px;font-size:12px;cursor:pointer;font-weight:600;">⟳ Reset This Entry</button>'
+      : '<button onclick="promptAdmin()" style="background:none;border:1px solid #aaa;color:#aaa;border-radius:8px;padding:6px 14px;font-size:12px;cursor:pointer;font-weight:600;">🔐 Admin</button>'
+    }
+  </div>`;
+  return h;
+}
+
+function renderRules(){
+  return`<div style="margin-bottom:12px;">${RB('← Back','hideRules()',true)}</div>
+  <div style="background:#fff;border:1px solid #ddd0c8;border-radius:10px;overflow:hidden;margin-bottom:14px;">
+    <div style="background:#BF0D3E;color:#fff;font-size:15px;font-weight:700;font-family:Georgia,serif;padding:10px 16px;">📋 Pool Rules</div>
+    <div style="padding:1.25rem;line-height:1.7;font-size:14px;">
+      <div style="margin-bottom:18px;">
+        <div style="font-weight:700;font-size:15px;color:#002868;margin-bottom:6px;font-family:Georgia,serif;">Overview</div>
+        <p>Pick a roster of golfers competing in the 2026 US Open at Shinnecock Hills. Your team's score is the sum of your <strong>5 best performers</strong> relative to par. Lowest total score wins — same as real golf.</p>
+      </div>
+      <div style="margin-bottom:18px;">
+        <div style="font-weight:700;font-size:15px;color:#002868;margin-bottom:6px;font-family:Georgia,serif;">Roster Rules</div>
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:5px 0;border-bottom:1px solid #f0ece6;">✅ Pick <strong>5 to 8 golfers</strong> total</li>
+          <li style="padding:5px 0;border-bottom:1px solid #f0ece6;">✅ <strong>Minimum 1 golfer from each tier</strong> (Elite, Mid, Value, Longshot)</li>
+          <li style="padding:5px 0;border-bottom:1px solid #f0ece6;">✅ Stay within the <strong>$210,000 salary cap</strong></li>
+          <li style="padding:5px 0;">✅ Only your <strong>5 lowest scores count</strong> — extra picks are insurance</li>
+        </ul>
+      </div>
+      <div style="margin-bottom:18px;">
+        <div style="font-weight:700;font-size:15px;color:#002868;margin-bottom:6px;font-family:Georgia,serif;">The 4 Tiers</div>
+        <p style="margin-bottom:10px;">Players are priced using betting odds. Higher favorites cost more salary. Tiers are assigned by odds bracket:</p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;background:#f0f3ff;">
+            <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#002868;flex-shrink:0;"></span>
+            <div><strong>Tier 1 — Elite</strong> &nbsp;·&nbsp; Odds ≤ +2500 &nbsp;·&nbsp; The favorites. Expensive but most likely to contend.</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;background:#f0f3ff;">
+            <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#1a4a8a;flex-shrink:0;"></span>
+            <div><strong>Tier 2 — Mid</strong> &nbsp;·&nbsp; Odds +2501 to +5500 &nbsp;·&nbsp; Strong players with major upside at a discount.</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;background:#f0f3ff;">
+            <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#1a6b2e;flex-shrink:0;"></span>
+            <div><strong>Tier 3 — Value</strong> &nbsp;·&nbsp; Odds +5501 to +15000 &nbsp;·&nbsp; Mid-range picks. Great for filling out your roster.</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;background:#f0f3ff;">
+            <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#7a5a00;flex-shrink:0;"></span>
+            <div><strong>Tier 4 — Longshot</strong> &nbsp;·&nbsp; Odds > +15000 &nbsp;·&nbsp; Cheap, high-risk, high-reward picks. One hot week and they win you the pool.</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-bottom:18px;">
+        <div style="font-weight:700;font-size:15px;color:#002868;margin-bottom:6px;font-family:Georgia,serif;">Scoring</div>
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:5px 0;border-bottom:1px solid #f0ece6;">📊 Scores are updated live from ESPN throughout the tournament</li>
+          <li style="padding:5px 0;border-bottom:1px solid #f0ece6;">⭐ Your <strong>5 lowest scores</strong> (relative to par) are summed for your pool total</li>
+          <li style="padding:5px 0;border-bottom:1px solid #f0ece6;">🏌️ If a golfer misses the cut, their 36-hole score still counts toward your pool total</li>
+          <li style="padding:5px 0;border-bottom:1px solid #f0ece6;">📋 Your 5 scoring slots are filled by your best active scores first. If fewer than 5 of your picks make the cut, the remaining slots are filled by your best missed-cut scores</li>
+          <li style="padding:5px 0;">🏆 Lowest cumulative score wins. Tiebreaker: closest guess to winner's total stroke count</li>
+        </ul>
+      </div>
+      <div style="margin-bottom:18px;">
+        <div style="font-weight:700;font-size:15px;color:#002868;margin-bottom:6px;font-family:Georgia,serif;">Deadlines</div>
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:5px 0;border-bottom:1px solid #f0ece6;">🔒 Picks lock at <strong>Thursday June 18 at 7:00am EDT</strong> (first tee time)</li>
+          <li style="padding:5px 0;">No changes permitted after the deadline</li>
+        </ul>
+      </div>
+      <div style="margin-bottom:18px;">
+        <div style="font-weight:700;font-size:15px;color:#002868;margin-bottom:6px;font-family:Georgia,serif;">Changing Your Picks</div>
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:5px 0;border-bottom:1px solid #f0ece6;">✏️ You can change your picks any time <strong>before the deadline</strong> by tapping your name in the standings</li>
+          <li style="padding:5px 0;border-bottom:1px solid #f0ece6;">🔐 You'll be prompted for your <strong>4-digit PIN</strong> — set when you first submitted your entry</li>
+          <li style="padding:5px 0;">📧 Your PIN was included in your entry confirmation email</li>
+        </ul>
+      </div>
+      <div style="margin-bottom:18px;">
+        <div style="font-weight:700;font-size:15px;color:#002868;margin-bottom:6px;font-family:Georgia,serif;">Entry Fee</div>
+        <p style="margin-bottom:10px;">Entry fee is <strong>$50 per team</strong>, due upon submitting your picks.</p>
+        <div style="background:#e8f5e9;border:2px solid #1a6b2e;border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:12px;">
+          <span style="font-size:28px;">💸</span>
+          <div>
+            <div style="font-weight:700;font-size:15px;color:#1a6b2e;">Venmo: @Austin-Goswick</div>
+            <div style="font-size:12px;color:#555;">Send $50 before June 18 at 7:00am EDT (first tee time)</div>
+          </div>
+        </div>
+        <p style="margin-top:10px;font-size:13px;color:#666;">Paid entries will show a 💰 next to your name in the standings.</p>
+      </div>
+      <div style="background:#f0f3ff;border-radius:8px;padding:12px 16px;font-size:13px;color:#555;">
+        💡 <strong>Strategy tip:</strong> Shinnecock Hills is one of the toughest US Open setups in the world. Consistency matters — a reliable Tier 2 mid might beat a boom-or-bust Tier 1 elite. Load up on a couple of cheap Longshots as insurance.
+      </div>
+    </div>
+  </div>
+  <div style="margin-bottom:12px;">${RB('← Back','hideRules()',true)}</div>`;
+}
+
+function renderAdmin(){
+  let h=`<div style="margin-bottom:12px;display:flex;gap:8px;align-items:center;">
+    ${RB('← Back','hideAdmin()',true)}
+    <span style="font-size:13px;color:#666;">Admin · Payment Tracker</span>
+  </div>
+  <div style="background:#fff;border:1px solid #ddd0c8;border-radius:10px;overflow:hidden;margin-bottom:14px;">
+    <div style="background:#BF0D3E;color:#fff;font-size:15px;font-weight:700;font-family:Georgia,serif;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;">
+      <span>💰 Payment Tracker <span style="font-size:12px;font-weight:400;margin-left:8px;">${entries.filter(e=>e.paid==true).length} of ${entries.length} paid</span></span>
+      <button onclick="generateStatsEmail()" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.5);color:#fff;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;">📊 Stats Email</button>
+    </div>
+    <div style="padding:0;">`;
+  if(!entries.length){
+    h+=`<div style="padding:1.5rem;text-align:center;color:#888;">No entries yet</div>`;
+  } else {
+    entries.slice().sort((a,b)=>a.name.localeCompare(b.name)).forEach(e=>{
+      h+=`<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:0.5px solid #ede6de;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          ${e.paid?'<span style="font-size:18px;">💰</span>':'<span style="font-size:18px;opacity:0.2;">💰</span>'}
+          <span style="font-weight:${e.paid?'700':'400'};color:${e.paid?'#1a6b2e':'#1a1a1a'};">${e.name}</span>
+        </div>
+        <button onclick="togglePaid(${e.id},${!e.paid})" style="background:${e.paid==true?'#1a6b2e':'#fff'};color:${e.paid==true?'#fff':'#1a6b2e'};border:2px solid #1a6b2e;border-radius:8px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;">
+          ${e.paid==true||e.paid=='true'?'✓ Paid':'Mark Paid'}
+        </button>
+      </div>`;
+    });
+  }
+  h+=`</div></div>`;
+  // Contact List
+  const emailList=entries.filter(e=>e.email).map(e=>e.email).join(', ');
+  h+=`<div style="background:#fff;border:1px solid #ddd0c8;border-radius:10px;overflow:hidden;margin-top:14px;">
+    <div style="background:#002868;color:#fff;font-size:15px;font-weight:700;font-family:Georgia,serif;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;">
+      <span>📋 Contact List</span>
+      <button onclick="copyAllEmails()" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.5);color:#fff;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;">📋 Copy All Emails</button>
+    </div>
+    <div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:13px;"><thead><tr><th style="text-align:left;padding:8px 12px;color:#002868;font-size:11px;text-transform:uppercase;border-bottom:2px solid #BF0D3E;background:#f0f3ff;">Name</th><th style="text-align:left;padding:8px 12px;color:#002868;font-size:11px;text-transform:uppercase;border-bottom:2px solid #BF0D3E;background:#f0f3ff;">Email</th></tr></thead><tbody>`;
+  entries.slice().sort((a,b)=>a.name.localeCompare(b.name)).forEach(e=>{
+    const em=e.email?('<a href="mailto:'+e.email+'" style="color:#002868;">'+e.email+'</a>'):'<span style="color:#ccc;">not provided</span>';
+    h+=`<tr style="border-bottom:0.5px solid #ede6de;"><td style="padding:8px 12px;font-weight:600;">${e.name}</td><td style="padding:8px 12px;">${em}</td></tr>`;
+  });
+  h+=`</tbody></table></div></div>`;
+  // Message Center
+  h+=`<div style="background:#fff;border:1px solid #ddd0c8;border-radius:10px;overflow:hidden;margin-top:14px;">
+    <div style="background:#002868;color:#fff;font-size:15px;font-weight:700;font-family:Georgia,serif;padding:10px 16px;">📢 Message Center</div>
+    <div style="padding:1rem 1.25rem;">
+      <div style="margin-bottom:10px;">
+        <label class="flabel">Recipients</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+          <button onclick="bcRecipients='all';bcSelected=[];rAdmin()" style="padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;border-radius:8px;border:2px solid #002868;background:${bcRecipients==='all'?'#002868':'#fff'};color:${bcRecipients==='all'?'#fff':'#002868'};">Everyone</button>
+          <button onclick="bcRecipients='select';rAdmin()" style="padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;border-radius:8px;border:2px solid #002868;background:${bcRecipients==='select'?'#002868':'#fff'};color:${bcRecipients==='select'?'#fff':'#002868'};">Select Individuals</button>
+        </div>
+      </div>
+      ${bcRecipients==='select'?`<div style="margin-bottom:10px;border:1px solid #ddd0c8;border-radius:8px;overflow:hidden;">${entries.map(e=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:0.5px solid #ede6de;"><input type="checkbox" ${bcSelected.includes(e.id)?'checked':''} onchange="if(this.checked){bcSelected.push(${e.id});}else{bcSelected=bcSelected.filter(x=>x!==${e.id});}rAdmin()" style="width:16px;height:16px;accent-color:#002868;"/><span style="font-size:13px;">${e.name}${e.email?'':' <span style=\\"color:#c00;font-size:11px;\\">(no email)</span>'}</span></div>`).join('')}</div>`:``}
+      <div style="margin-bottom:10px;">
+        <label class="flabel">Subject</label>
+        <input type="text" placeholder="e.g. Tournament starts tomorrow!" value="${bcSubject}" oninput="bcSubject=this.value" style="margin-top:4px;"/>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label class="flabel">Message</label>
+        <textarea placeholder="Write your message here…" oninput="bcMessage=this.value" style="width:100%;padding:10px 12px;border:1px solid #ddd0c8;border-radius:8px;font-size:14px;font-family:system-ui,sans-serif;min-height:100px;resize:vertical;outline:none;margin-top:4px;">${bcMessage}</textarea>
+      </div>
+      <div style="display:flex;justify-content:flex-end;">${RB('📤 Send Message','doSend()')}</div>
+    </div>
+  </div>`;
+  return h;
+}
+function rAdmin(){document.getElementById('root').innerHTML=renderAdmin();}
+
+function generateStatsEmail(){
+  if(!entries.length){showToast('No entries yet.');return;}
+  const total=entries.length;
+  const ownership={};
+  const salarySpent={};
+  const tiebreakers=[];
+  entries.forEach(e=>{
+    const picks=Array.isArray(e.picks)?e.picks:[];
+    const spent=picks.reduce((s,pid)=>{const p=PLAYERS.find(x=>x.id===pid);return s+(p?p.cost:0);},0);
+    salarySpent[e.id]={name:e.name,spent};
+    tiebreakers.push({name:e.name,tb:e.tiebreaker});
+    picks.forEach(pid=>{if(!ownership[pid])ownership[pid]=[];ownership[pid].push(e.name);});
+  });
+  const lines=[];
+  lines.push('Hi everyone,');
+  lines.push('');
+  lines.push('The US Open is underway at Shinnecock Hills! Here\'s how the pool shaped up:');
+  lines.push('');
+  lines.push('━━━━━━━━━━━━━━━━━━━━━━');
+  lines.push('POOL SUMMARY');
+  lines.push('━━━━━━━━━━━━━━━━━━━━━━');
+  lines.push('Total entries: '+total);
+  const scheffler=PLAYERS.find(p=>p.name==='Scottie Scheffler');
+  if(scheffler){const sc=(ownership[scheffler.id]||[]).length;lines.push('Scheffler ownership: '+sc+'/'+total+' entries ('+Math.round(sc/total*100)+'%)');}
+  lines.push('');
+  lines.push('━━━━━━━━━━━━━━━━━━━━━━');
+  lines.push('TIER BREAKDOWN');
+  lines.push('━━━━━━━━━━━━━━━━━━━━━━');
+  [1,2,3,4].forEach(tid=>{
+    const tierName=['Elite','Mid','Value','Longshot'][tid-1];
+    const tp=PLAYERS.filter(p=>p.tier===tid);
+    const picked=tp.map(p=>({name:p.name,count:(ownership[p.id]||[]).length,pct:Math.round((ownership[p.id]||[]).length/total*100)})).filter(x=>x.count>0).sort((a,b)=>b.count-a.count);
+    const notPicked=tp.filter(p=>!(ownership[p.id]||[]).length);
+    lines.push('Tier '+tid+' — '+tierName.toUpperCase());
+    if(picked[0])lines.push('  Most picked:  '+picked[0].name+' — '+picked[0].count+'/'+total+' ('+picked[0].pct+'%)');
+    if(picked.length>1){const l=picked[picked.length-1];lines.push('  Least picked: '+l.name+' — '+l.count+'/'+total+' ('+l.pct+'%)');}
+    if(notPicked.length)lines.push('  Not picked:   '+notPicked.map(p=>p.name).join(', '));
+    lines.push('');
+  });
+  const salaries=Object.values(salarySpent).sort((a,b)=>b.spent-a.spent);
+  const avgSalary=Math.round(salaries.reduce((s,x)=>s+x.spent,0)/salaries.length);
+  lines.push('━━━━━━━━━━━━━━━━━━━━━━');
+  lines.push('SALARY CAP');
+  lines.push('━━━━━━━━━━━━━━━━━━━━━━');
+  lines.push('Average spent: $'+avgSalary.toLocaleString());
+  lines.push('Highest: '+salaries[0].name+' ($'+salaries[0].spent.toLocaleString()+')');
+  lines.push('Lowest:  '+salaries[salaries.length-1].name+' ($'+salaries[salaries.length-1].spent.toLocaleString()+')');
+  lines.push('');
+  const tbVals=tiebreakers.map(x=>x.tb).filter(x=>x);
+  if(tbVals.length){
+    const avgTB=Math.round(tbVals.reduce((a,b)=>a+b,0)/tbVals.length);
+    lines.push('━━━━━━━━━━━━━━━━━━━━━━');
+    lines.push('TIEBREAKERS');
+    lines.push('━━━━━━━━━━━━━━━━━━━━━━');
+    lines.push('Average guess: '+avgTB+' strokes');
+    lines.push('Range: '+Math.min(...tbVals)+' to '+Math.max(...tbVals)+' strokes');
+    lines.push('');
+  }
+  const allPicked=PLAYERS.filter(p=>(ownership[p.id]||[]).length>0).map(p=>({name:p.name,tier:p.tier,count:(ownership[p.id]||[]).length,pct:Math.round((ownership[p.id]||[]).length/total*100)})).sort((a,b)=>b.count-a.count);
+  const soloActs=allPicked.filter(p=>p.count===1);
+  if(soloActs.length){
+    lines.push('━━━━━━━━━━━━━━━━━━━━━━');
+    lines.push('CONTRARIAN PLAYS (only 1 person)');
+    lines.push('━━━━━━━━━━━━━━━━━━━━━━');
+    soloActs.forEach(p=>lines.push('  T'+p.tier+' '+p.name));
+    lines.push('');
+  }
+  lines.push('━━━━━━━━━━━━━━━━━━━━━━');
+  lines.push('FULL OWNERSHIP');
+  lines.push('━━━━━━━━━━━━━━━━━━━━━━');
+  allPicked.forEach(p=>lines.push('  T'+p.tier+' '+p.name+': '+p.count+'/'+total+' ('+p.pct+'%)'));
+  lines.push('');
+  lines.push('━━━━━━━━━━━━━━━━━━━━━━');
+  lines.push('Good luck! Live standings: https://austingozzie.github.io/usopen-pool-2026');
+  lines.push('— Austin');
+  const email=lines.join('\n');
+  const overlay=document.createElement('div');
+  overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px;';
+  overlay.innerHTML='<div style="background:#fff;border-radius:12px;max-width:600px;width:100%;max-height:85vh;overflow-y:auto;padding:20px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><strong style="font-size:15px;color:#002868;">Stats Email</strong><button onclick="this.closest(\'div[style*=fixed]\').remove()" style="background:none;border:none;font-size:20px;cursor:pointer;">x</button></div><textarea id="stats-ta" readonly style="width:100%;height:400px;font-family:monospace;font-size:12px;padding:10px;border:1px solid #ddd;border-radius:8px;resize:none;white-space:pre;">'+email.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</textarea><div style="margin-top:10px;display:flex;gap:8px;justify-content:flex-end;"><button onclick="navigator.clipboard.writeText(document.getElementById(\'stats-ta\').value);showToast(\'Copied!\');" style="background:#002868;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-weight:700;cursor:pointer;">Copy</button><button onclick="this.closest(\'div[style*=fixed]\').remove()" style="background:#666;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-weight:700;cursor:pointer;">Close</button></div></div>';
+  document.body.appendChild(overlay);
+}
+window.generateStatsEmail=generateStatsEmail;
+
+window.rAdmin=rAdmin;
+window.doSend=async function(){
+  if(!bcSubject.trim()){showToast('Please enter a subject.');return;}
+  if(!bcMessage.trim()){showToast('Please enter a message.');return;}
+  if(bcRecipients==='select'&&bcSelected.length===0){showToast('Select at least one recipient.');return;}
+  const targets=bcRecipients==='all'?entries:entries.filter(e=>bcSelected.includes(e.id));
+  if(!confirm('Send to '+(bcRecipients==='all'?'everyone ('+entries.length+')':bcSelected.length+' participant(s)')+'?'))return;
+  const failed=[];
+  for(const e of targets){
+    if(!e.email)continue;
+    try{
+      await emailjs.send('service_obwqrtc','template_1b5du07',{
+        to_name:e.name,to_email:e.email,subject:bcSubject.trim(),message:bcMessage.trim(),
+      });
+    }catch(err){failed.push(e.name);}
+  }
+  if(failed.length)showToast('Failed: '+failed.join(', '));
+  else showToast('Sent to '+targets.filter(e=>e.email).length+' participant(s)!');
+  bcSubject='';bcMessage='';bcSelected=[];rAdmin();
+};
+
+window.selfReset=async function(id){
+  if(isLocked()){showToast('🔒 Picks are locked — tournament has started.');return;}
+  const existing=entries.find(e=>e.id===id);
+  if(!existing)return;
+  const entered=prompt('Enter your 4-digit PIN to change your picks:');
+  if(entered===null)return;
+  if(String(entered)!==String(existing.pin)){showToast('❌ Incorrect PIN. Try again.');return;}
+  editingEntry={...existing,picks:Array.isArray(existing.picks)?[...existing.picks]:[]};
+  rN=existing.name||'';
+  rP=Array.isArray(existing.picks)?[...existing.picks]:[];
+  rTB=existing.tiebreaker?String(existing.tiebreaker):'';
+  try{rEmail=localStorage.getItem('usopen2026_email')||'';}catch(e){rEmail='';}
+  rPin=existing.pin||'';
+  rErr='';rS='';
+  viewingUser=null;
+  registering=true;render();
+};
+
+window.togglePaid=async function(id,paid){
+  try{
+    await updatePaid(id,paid);
+    const e=entries.find(x=>x.id===id);
+    if(e)e.paid=paid;
+    showToast(paid?'Marked as paid ✓':'Marked as unpaid');
+    render();
+  }catch(err){showToast('Error: '+err.message);}
+};
+
+function renderTourney(){
+  if(tLoading)return`<div class="loading">Loading scores…</div>`;
+  if(!tData)return`<div style="text-align:center;padding:2.5rem;background:#fff;border:1px solid #ddd0c8;border-radius:10px;">
+    <p style="font-size:17px;font-weight:700;color:#002868;margin-bottom:6px;font-family:Georgia,serif;">Tournament begins June 18</p>
+    <p style="color:#888;font-size:13px;">Live leaderboard will appear here once play begins.</p>
+    <div style="margin-top:16px;">${RB('Try Loading Scores','fetchScores().then(render)',true)}</div>
+  </div>`;
+  const comps=(tData.competitions&&tData.competitions[0]&&tData.competitions[0].competitors)||[];
+  const sorted=comps.slice().sort((a,b)=>{
+    const sa=a.score?parseFloat(a.score):999;const sb=b.score?parseFloat(b.score):999;return sa-sb;
+  });
+  let h=`<div style="background:#fff;border:1px solid #ddd0c8;border-radius:10px;overflow:hidden;margin-bottom:14px;">
+  <div style="background:#002868;color:#fff;font-weight:700;font-family:Georgia,serif;padding:10px 16px;font-size:15px;">${tData.name||'Tournament Leaderboard'}</div>
+  <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;"><table style="min-width:380px;">
+    <thead><tr><th style="width:42px;">Pos</th><th>Player</th><th style="text-align:right;">Total</th><th style="text-align:right;">Today</th><th style="text-align:right;">Thru</th></tr></thead><tbody>`;
+  sorted.slice(0,100).forEach((c,i)=>{
+    const name=(c.athlete&&c.athlete.displayName)||'';
+    const score=c.score||(c.score&&c.score.displayValue)||'--';
+    const scoreNum=typeof score==='string'?(score==='E'?0:parseFloat(score)):score;
+    const inPool=PLAYERS.some(p=>normName(p.name).split(' ').every(pt=>normName(name).includes(pt)));
+    const poolPlayer=inPool?PLAYERS.find(p=>normName(p.name).split(' ').every(pt=>normName(name).includes(pt))):null;
+    const pickers=poolPlayer?entries.filter(e=>Array.isArray(e.picks)&&e.picks.includes(poolPlayer.id)):[];
+    const pickCount=pickers.length;
+    const pickerId='pickers-'+i;
+    h+=`<tr${inPool?' style="background:rgba(0,40,104,0.05);"':''}>
+      <td>${i+1}</td>
+      <td style="font-weight:${inPool?'700':'400'};">
+        ${name}${inPool?'<span style="font-size:10px;color:#002868;margin-left:4px;">●</span>':''}
+        ${pickCount>0?`<span onclick="document.getElementById('${pickerId}').style.display=document.getElementById('${pickerId}').style.display==='none'?'block':'none'" style="cursor:pointer;margin-left:6px;font-size:11px;color:#fff;background:#002868;border-radius:10px;padding:1px 6px;font-weight:700;">${pickCount}</span>`:''}
+        ${pickCount>0?`<div id="${pickerId}" style="display:none;font-size:11px;color:#555;margin-top:3px;font-weight:400;">${pickers.map(e=>e.name).join(', ')}</div>`:''}
+      </td>
+      <td style="text-align:right;" class="${!isNaN(scoreNum)?sc(scoreNum):''}">${fmtS(isNaN(scoreNum)?score:scoreNum)}</td>
+      <td style="text-align:right;">--</td><td style="text-align:right;">--</td>
+    </tr>`;
+  });
+  h+=`</tbody></table></div></div>
+  <div class="info"><span>● = player in pool &nbsp;·&nbsp; 📡 via ESPN</span>${RB('Refresh','fetchScores().then(render)',true)}</div>`;
+  return h;
+}
+
+// ── REGISTRATION ─────────────────────────────────────────────────
+function renderReg(){
+  const spent=rP.reduce((s,pid)=>{const p=PLAYERS.find(x=>x.id===pid);return s+(p?p.cost:0);},0);
+  const rem=BUDGET-spent;const over=spent>BUDGET;const pct=Math.min(100,(spent/BUDGET)*100);
+  const tierCounts=[1,2,3,4].map(tid=>rP.filter(pid=>{const p=PLAYERS.find(x=>x.id===pid);return p&&p.tier===tid;}).length);
+  const totalPicks=rP.length;
+  const minMet=tierCounts.every(c=>c>=MIN_PER_TIER);
+  const allDone=minMet&&totalPicks>=MIN_PICKS&&!over;
+
+  let h=`<div style="background:#fff;border:1px solid #ddd0c8;border-radius:10px;padding:1rem 1.25rem;margin-bottom:12px;">
+    <div style="font-size:16px;font-weight:700;font-family:Georgia,serif;color:#002868;margin-bottom:4px;">Build Your Lineup</div>
+    <div style="font-size:12px;color:#888;margin-bottom:14px;">Pick ${MIN_PICKS}–${MAX_PICKS} golfers · Min 1 from each tier · Best ${SCORING_PICKS} scores count · $${(BUDGET/1000).toFixed(0)}k budget</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+      <div><label class="flabel">Your name</label><input type="text" placeholder="Enter your name" value="${rN}" oninput="rN=this.value"/></div>
+      <div><label class="flabel">Tiebreaker — winner's total strokes</label><input type="number" placeholder="e.g. 275" value="${rTB}" oninput="rTB=this.value"/></div>
+    </div>
+    <div style="margin-bottom:12px;">
+      <label class="flabel">Email address (for your entry receipt)</label>
+      <input type="email" placeholder="you@example.com" value="${rEmail}" oninput="rEmail=this.value" style="font-size:16px;padding:12px 14px;"/>
+    </div>
+    <div style="margin-bottom:12px;">
+      <label class="flabel">4-digit PIN (to change your picks later)</label>
+      <input type="number" placeholder="e.g. 1234" value="${rPin}" oninput="rPin=this.value.slice(0,4)" style="font-size:16px;padding:12px 14px;max-width:180px;"/>
+    </div>
+    <div class="budget">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:12px;font-weight:700;color:#002868;text-transform:uppercase;">Salary Cap</span>
+        <span id="reg-rem" style="font-size:16px;font-weight:700;color:${over?'#BF0D3E':'#002868'};">${fmt(rem)} remaining</span>
+      </div>
+      <div class="bbar"><div id="reg-bfill" class="bfill${over?' over':''}" style="width:${pct.toFixed(1)}%;"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#999;"><span id="reg-spent">Spent: ${fmt(spent)}</span><span>Cap: ${fmt(BUDGET)}</span></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;" id="reg-tier-status">
+      ${[1,2,3,4].map(tid=>{const cnt=tierCounts[tid-1];const ok=cnt>=MIN_PER_TIER;const c=TC[tid];const label=['Elite','Mid','Value','Longshot'][tid-1];return`<div style="display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;border:2px solid ${c};background:${ok?c:'transparent'};"><span style="font-size:12px;font-weight:700;color:${ok?'#fff':c};">T${tid} ${label}: ${cnt}${ok?' ✓':' (need 1)'}</span></div>`;}).join('')}
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;">
+      <span style="font-size:12px;color:#666;">Picks: <strong>${totalPicks}</strong> of ${MIN_PICKS}–${MAX_PICKS}</span>
+      <span style="font-size:12px;color:#1a6b2e;font-weight:700;">Best ${SCORING_PICKS} count toward score</span>
+    </div>
+    <div id="reg-chips" style="display:flex;flex-wrap:wrap;min-height:28px;margin-bottom:10px;">
+      ${rP.map(pid=>{const p=PLAYERS.find(x=>x.id===pid);if(!p)return'';return`<span class="chip" style="background:${TC[p.tier]};">${p.name}<span class="cx" onclick="tp(${pid})"> ×</span></span>`;}).join('')}
+      ${rP.length===0?'<span style="font-size:12px;color:#ccc;align-self:center;">No players selected</span>':''}
+    </div>
+    <input type="text" id="player-search" placeholder="Search players…" style="margin-bottom:10px;" oninput="filterPlayers(this.value)" autocomplete="off"/>`;
+
+  [1,2,3,4].forEach(tid=>{
+    const tier=TIERS[tid-1];
+    const ps=PLAYERS.filter(p=>p.tier===tid&&(!rS||p.name.toLowerCase().includes(rS.toLowerCase())));
+    const tpk=rP.filter(pid=>{const p=PLAYERS.find(x=>x.id===pid);return p&&p.tier===tid;});
+    if(!ps.length)return;
+    h+=`<div class="tier-block"><div class="tier-head" style="background:${tier.color};">
+      <div><div class="tier-title">${tier.name}</div><div class="tier-sub">${tier.range}</div></div>
+      <span class="tier-badge${tpk.length>=MIN_PER_TIER?' done':''}">${tpk.length} picked${tpk.length>=MIN_PER_TIER?' ✓':' (min 1)'}</span>
+    </div><div class="tier-body">`;
+    ps.forEach(p=>{
+      const sel=rP.includes(p.id);
+      const atMax=totalPicks>=MAX_PICKS&&!sel;
+      const noBudget=!sel&&rem<p.cost;
+      const dis=atMax||noBudget;
+      h+=`<div id="pr-${p.id}" class="pr${dis?' dim':''}">
+        <span class="pn">${p.name} <span style="font-size:10px;color:#999;">+${p.odds.toLocaleString()}</span></span>
+        <span class="pc" style="color:${tier.color};">${fmt(p.cost)}</span>
+        <input type="checkbox" ${sel?'checked':''} ${dis?'disabled':''} onchange="tp(${p.id})"/>
+      </div>`;
+    });
+    h+=`</div></div>`;
+  });
+
+  h+=`<div id="reg-status" style="font-size:12px;font-weight:700;margin:8px 0;color:${allDone?'#1a6b2e':'#002868'};">
+    ${allDone?`✓ Lineup complete (${totalPicks} picks, best ${SCORING_PICKS} count) — ready to submit!`:`Min ${MIN_PICKS} picks required · 1 from each tier · ${MAX_PICKS} max`}
+  </div>`;
+  if(rErr)h+=`<p id="reg-err" style="color:#BF0D3E;font-size:12px;margin-top:4px;font-weight:600;">${rErr}</p>`;
+  h+=`<div style="display:flex;gap:10px;margin-top:12px;justify-content:flex-end;flex-wrap:wrap;">${editingEntry?RBalt('← Keep My Current Picks','cancelReg()',true):RB('← Back','cancelReg()',true)}${RB('Submit My Picks →','sub()')}</div>
+  </div>`;
+  return h;
+}
+
+function rr(){document.getElementById('root').innerHTML=renderReg();}
+function filterPlayers(val){
+  rS=val;
+  const q=val.toLowerCase().trim();
+  PLAYERS.forEach(p=>{
+    const row=document.getElementById('pr-'+p.id);
+    if(!row)return;
+    row.style.display=(!q||p.name.toLowerCase().includes(q))?'':'none';
+  });
+}
+
+function updateRegUI(){
+  const spent=rP.reduce((s,pid)=>{const p=PLAYERS.find(x=>x.id===pid);return s+(p?p.cost:0);},0);
+  const rem=BUDGET-spent;const over=spent>BUDGET;const pct=Math.min(100,(spent/BUDGET)*100);
+  const tierCounts=[1,2,3,4].map(tid=>rP.filter(pid=>{const p=PLAYERS.find(x=>x.id===pid);return p&&p.tier===tid;}).length);
+  const totalPicks=rP.length;
+  const minMet=tierCounts.every(c=>c>=MIN_PER_TIER);
+  const allDone=minMet&&totalPicks>=MIN_PICKS&&!over;
+  const fill=document.getElementById('reg-bfill');
+  if(fill){fill.style.width=pct.toFixed(1)+'%';fill.className='bfill'+(over?' over':'');}
+  const remEl=document.getElementById('reg-rem');
+  if(remEl){remEl.textContent=fmt(rem)+' remaining';remEl.style.color=over?'#BF0D3E':'#002868';}
+  const spentEl=document.getElementById('reg-spent');if(spentEl)spentEl.textContent='Spent: '+fmt(spent);
+  const tsEl=document.getElementById('reg-tier-status');
+  if(tsEl){tsEl.innerHTML=[1,2,3,4].map(tid=>{const cnt=tierCounts[tid-1];const ok=cnt>=MIN_PER_TIER;const c=TC[tid];const label=['Elite','Mid','Value','Longshot'][tid-1];return`<div style="display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;border:2px solid ${c};background:${ok?c:'transparent'};"><span style="font-size:12px;font-weight:700;color:${ok?'#fff':c};">T${tid} ${label}: ${cnt}${ok?' ✓':' (need 1)'}</span></div>`;}).join('');}
+  const chipsEl=document.getElementById('reg-chips');
+  if(chipsEl){if(!rP.length)chipsEl.innerHTML='<span style="font-size:12px;color:#ccc;align-self:center;">No players selected</span>';else chipsEl.innerHTML=rP.map(pid=>{const p=PLAYERS.find(x=>x.id===pid);if(!p)return'';return`<span class="chip" style="background:${TC[p.tier]};">${p.name}<span class="cx" onclick="tp(${pid})"> ×</span></span>`;}).join('');}
+  const statEl=document.getElementById('reg-status');
+  if(statEl){statEl.textContent=allDone?`✓ Lineup complete (${totalPicks} picks, best ${SCORING_PICKS} count) — ready to submit!`:`Min ${MIN_PICKS} picks required · 1 from each tier · ${MAX_PICKS} max`;statEl.style.color=allDone?'#1a6b2e':'#002868';}
+  PLAYERS.forEach(p=>{
+    const row=document.getElementById('pr-'+p.id);if(!row)return;
+    const sel=rP.includes(p.id);
+    const curSpent=rP.reduce((s,id)=>{const pl=PLAYERS.find(x=>x.id===id);return s+(pl?pl.cost:0);},0);
+    const curRem=BUDGET-curSpent;
+    const atMax=totalPicks>=MAX_PICKS&&!sel;
+    const dis=atMax||((!sel)&&curRem<p.cost);
+    const cb=row.querySelector('input[type=checkbox]');
+    if(cb){cb.checked=sel;cb.disabled=dis;}
+    row.className='pr'+(dis?' dim':'');
+  });
+}
+
+function tp(pid){
+  const p=PLAYERS.find(x=>x.id===pid);if(!p)return;
+  if(rP.includes(pid)){rP=rP.filter(x=>x!==pid);rErr='';updateRegUI();return;}
+  const spent=rP.reduce((s,id)=>{const pl=PLAYERS.find(x=>x.id===id);return s+(pl?pl.cost:0);},0);
+  if(rP.length>=MAX_PICKS){rErr=`Max ${MAX_PICKS} picks allowed.`;updateRegUI();return;}
+  if(spent+p.cost>BUDGET){rErr='Not enough salary budget.';updateRegUI();return;}
+  rP.push(pid);rErr='';updateRegUI();
+}
+
+async function sub(){
+  if(!rN.trim()){rErr='Please enter your name.';rr();return;}
+  const tierCounts=[1,2,3,4].map(tid=>rP.filter(pid=>{const p=PLAYERS.find(x=>x.id===pid);return p&&p.tier===tid;}).length);
+  if(!tierCounts.every(c=>c>=MIN_PER_TIER)){rErr='Select at least 1 player from each tier.';rr();return;}
+  if(rP.length<MIN_PICKS){rErr=`Select at least ${MIN_PICKS} players total.`;rr();return;}
+  if(rP.length>MAX_PICKS){rErr=`Max ${MAX_PICKS} players allowed.`;rr();return;}
+  if(!rTB||isNaN(parseInt(rTB))){rErr='Enter a tiebreaker total (e.g. 275).';rr();return;}
+  if(!rEmail||!rEmail.includes('@')){rErr='Please enter a valid email address.';rr();return;}
+  if(!rPin||String(rPin).length!==4||isNaN(parseInt(rPin))){rErr='Please enter a 4-digit PIN.';rr();return;}
+  const spent=rP.reduce((s,pid)=>{const p=PLAYERS.find(x=>x.id===pid);return s+(p?p.cost:0);},0);
+  if(spent>BUDGET){rErr='Over salary cap.';rr();return;}
+  rErr='Saving your picks…';rr();
+  try{
+    let wasPaid=false;
+    if(editingEntry){
+      wasPaid=editingEntry.paid===true||editingEntry.paid==='true';
+      await deleteEntryById(editingEntry.id);
+      entries=entries.filter(e=>e.id!==editingEntry.id);
+      editingEntry=null;
+    }
+    const result=await insertEntry(rN.trim(),rP,parseInt(rTB),String(rPin),rEmail.trim());
+    const newEntry=Array.isArray(result)?result[0]:result;
+    entries.push(newEntry);myId=newEntry.id;setMyId(newEntry.id);
+    editingEntry=null;
+    try{localStorage.setItem('usopen2026_email',rEmail.trim());}catch(e){}
+    if(wasPaid&&newEntry){
+      try{await updatePaid(newEntry.id,true);newEntry.paid=true;}catch(e){}
+    }
+    registering=false;showToast("✓ You're in the pool! Good luck!");render();
+    try{
+      const picksList=rP.map(pid=>{
+        const p=PLAYERS.find(x=>x.id===pid);
+        if(!p)return'';
+        const tname=['Elite','Mid','Value','Longshot'][p.tier-1];
+        return`${p.name} (T${p.tier} ${tname} — $${p.cost.toLocaleString()})`;
+      }).join('\n');
+      const spent=rP.reduce((s,pid)=>{const p=PLAYERS.find(x=>x.id===pid);return s+(p?p.cost:0);},0);
+      await emailjs.send('service_obwqrtc','template_s0193hj',{
+        to_name:rN.trim(),
+        to_email:rEmail.trim(),
+        tiebreaker:parseInt(rTB),
+        salary:'$'+spent.toLocaleString(),
+        pick_count:rP.length,
+        picks_list:picksList,
+        pin:String(rPin),
+      });
+      await emailjs.send('service_obwqrtc','template_1b5du07',{
+        to_name:rN.trim(),
+        to_email:'austingozzie@gmail.com',
+        submitted_at:new Date().toLocaleString(),
+      });
+    }catch(emailErr){console.warn('Email failed:',emailErr);}
+  }catch(e){rErr='Error: '+e.message;rr();}
+}
+
+function startReg(){if(isLocked()){showToast('🔒 Picks are locked — tournament has started.');return;}rN='';rP=[];rTB='';rEmail='';rPin='';rErr='';rS='';registering=true;render();}
+function cancelReg(){
+  if(editingEntry){
+    if(!entries.find(e=>e.id===editingEntry.id)){
+      entries.push(editingEntry);
+      myId=editingEntry.id;setMyId(editingEntry.id);
+    }
+    viewingUser=editingEntry.id;
+    editingEntry=null;
+  }
+  registering=false;render();
+}
+function viewUser(id){viewingUser=id;render();}
+function back(){viewingUser=null;render();}
+async function go(){await Promise.all([refreshEntries(),fetchScores()]);render();}
+
+async function deleteEntry(id){
+  if(!confirm('Reset this entry? This cannot be undone.'))return;
+  try{
+    await deleteEntryById(id);
+    entries=entries.filter(e=>e.id!==id);
+    if(myId===id){myId=null;try{localStorage.removeItem(MY_KEY);}catch(e){}}
+    viewingUser=null;showToast('Entry reset.');render();
+  }catch(e){showToast('Error: '+e.message);}
+}
+
+function promptAdmin(){
+  const pw=prompt('Enter admin password:');
+  if(pw===null)return;
+  if(pw==='ComGoz8'){adminUnlocked=true;showToast('Admin mode unlocked.');render();}
+  else{showToast('Incorrect password.');}
+}
+window.promptAdmin=promptAdmin;
+window.copyAllEmails=function(){
+  const emails=entries.filter(e=>e.email).map(e=>e.email).join(', ');
+  if(!emails){showToast('No emails to copy.');return;}
+  navigator.clipboard.writeText(emails).then(()=>showToast('📋 '+entries.filter(e=>e.email).length+' emails copied!')).catch(()=>showToast('Copy failed — try a different browser.'));
+};
+
+let bcSubject='',bcMessage='',bcRecipients='all',bcSelected=[];
+function showRules(){viewingRules=true;render();}
+function showAdmin(){if(!adminUnlocked){promptAdmin();if(!adminUnlocked)return;}viewingAdmin=true;render();}
+function hideAdmin(){viewingAdmin=false;render();}
+window.showAdmin=showAdmin;window.hideAdmin=hideAdmin;
+function hideRules(){viewingRules=false;render();}
+window.showRules=showRules;window.hideRules=hideRules;
+window.cancelReg=cancelReg;window.sub=sub;window.tp=tp;window.rr=rr;
+window.updateRegUI=updateRegUI;window.viewUser=viewUser;window.back=back;window.go=go;
+window.startReg=startReg;window.deleteEntry=deleteEntry;
+window.fetchScores=fetchScores;
+
+(async()=>{render();await Promise.all([refreshEntries(),fetchScores(),refreshOdds()]);appLoading=false;render();})();
+</script>
+</body>
+</html>
